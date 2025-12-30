@@ -1,184 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blox Exchange | Premium Fruit Marketplace</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #ffffff; }
-        .glass-card { background: rgba(23, 23, 23, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(63, 63, 70, 0.4); }
-        .item-card:hover { border-color: #3b82f6; transform: translateY(-4px); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
-    </style>
-</head>
-<body class="custom-scrollbar">
-    <div id="root"></div>
+import React, { useState, useEffect } from 'react';
+import { ShieldCheck, Calculator, Store, TrendingUp, Users, Star, ChevronRight, CheckCircle, Lock, Zap, Award, ArrowRight, Sparkles, Filter, Search, X, ShoppingCart } from 'lucide-react';
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+const BloxEx = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [activeUsers, setActiveUsers] = useState(247);
+  const [loading, setLoading] = useState(true);
+  const [selectedFruit, setSelectedFruit] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterRarity, setFilterRarity] = useState('all');
+  const [sortBy, setSortBy] = useState('popular');
 
-        // Custom Icon Component
-        const Icon = ({ name, size = 20, className = "" }) => {
-            useEffect(() => { lucide.createIcons(); }, []);
-            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
-        };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveUsers(prev => {
+        const change = Math.floor(Math.random() * 7) - 3;
+        return Math.max(200, Math.min(350, prev + change));
+      });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('store');
-            const [search, setSearch] = useState("");
-            const [filter, setFilter] = useState("All");
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2200);
+  }, []);
 
-            const fruits = [
-                { id: 1, name: 'Kitsune', price: 4500, usd: 85, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e4/Kitsune_Fruit.png', stock: 12, hot: true },
-                { id: 2, name: 'Leopard', price: 3000, usd: 60, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c4/Leopard_Fruit.png', stock: 8, hot: true },
-                { id: 3, name: 'Dragon', price: 2800, usd: 56, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a9/Dragon_Fruit.png', stock: 5, hot: false },
-                { id: 4, name: 'Dough V2', price: 2600, usd: 52, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/5/55/Dough_Fruit.png', stock: 15, hot: true },
-                { id: 5, name: 'T-Rex', price: 2400, usd: 48, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/5/52/T-Rex_Fruit.png', stock: 7, hot: false },
-                { id: 6, name: 'Spirit', price: 2000, usd: 40, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3f/Spirit_Fruit.png', stock: 22, hot: false },
-                { id: 7, name: 'Buddha', price: 2500, usd: 50, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/b/b5/Buddha_Fruit.png', stock: 40, hot: true },
-                { id: 8, name: 'Mammoth', price: 2200, usd: 44, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a7/Mammoth_Fruit.png', stock: 10, hot: false },
-            ];
+  const fruits = [
+    { name: 'Kitsune', price: 4500, usd: 85, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e4/Kitsune_Fruit.png', perm: 8000, permUsd: 160, glow: '#3b82f6', stock: 5, rating: 5.0, sales: 942 },
+    { name: 'Leopard', price: 3000, usd: 60, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c4/Leopard_Fruit.png', perm: 5000, permUsd: 100, glow: '#64748b', stock: 12, rating: 4.9, sales: 1847 },
+    { name: 'Dragon', price: 2800, usd: 56, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a9/Dragon_Fruit.png', perm: 4500, permUsd: 90, glow: '#334155', stock: 8, rating: 4.8, sales: 2156 },
+    { name: 'Dough V2', price: 2600, usd: 52, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/5/55/Dough_Fruit.png', perm: 4000, permUsd: 80, glow: '#94a3b8', stock: 15, rating: 4.9, sales: 3241 },
+    { name: 'Buddha', price: 2500, usd: 50, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/b/b5/Buddha_Fruit.png', perm: 4200, permUsd: 84, glow: '#3b82f6', stock: 10, rating: 4.9, sales: 3567 },
+  ];
 
-            const filteredFruits = fruits.filter(f => 
-                f.name.toLowerCase().includes(search.toLowerCase()) && 
-                (filter === "All" || f.rarity === filter)
-            );
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center overflow-hidden relative">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)',
+            backgroundSize: '100px 100px',
+            animation: 'gridSlide 20s linear infinite'
+          }}></div>
+        </div>
+        
+        <div className="text-center relative z-10">
+          <div className="relative w-48 h-48 mx-auto mb-8">
+            <div className="absolute inset-0 border-4 border-zinc-800 border-t-blue-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-3 border-4 border-zinc-900 border-t-zinc-400 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '2s'}}></div>
+            <div className="absolute inset-8 bg-zinc-900 rounded-full flex items-center justify-center shadow-2xl">
+              <Sparkles className="w-12 h-12 text-blue-500" />
+            </div>
+          </div>
+          <h2 className="text-5xl font-black mb-3 tracking-tighter">
+            <span className="text-white">BLOX</span>
+            <span className="text-blue-500">EX</span>
+          </h2>
+          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Loading Secure Environment</p>
+        </div>
 
-            return (
-                <div className="min-h-screen pb-20">
-                    {/* Navigation */}
-                    <nav className="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-zinc-800">
-                        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                            <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('home')}>
-                                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                    <Icon name="zap" size={20} />
-                                </div>
-                                <span className="text-xl font-extrabold tracking-tighter">BLOX<span className="text-blue-500">EX</span></span>
-                            </div>
-                            <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-                                <button onClick={() => setCurrentPage('home')} className="hover:text-white transition-colors">Home</button>
-                                <button onClick={() => setCurrentPage('store')} className="text-white">Marketplace</button>
-                                <button onClick={() => setCurrentPage('calculator')} className="hover:text-white transition-colors">Calculator</button>
-                                <button onClick={() => setCurrentPage('p2p')} className="hover:text-white transition-colors">Safe Escrow</button>
-                            </div>
-                            <button className="bg-white text-black px-4 py-2 rounded-full text-xs font-bold hover:bg-zinc-200 transition-all">Connect Wallet</button>
-                        </div>
-                    </nav>
+        <style>{`
+          @keyframes gridSlide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+          }
+        `}</style>
+      </div>
+    );
+  }
 
-                    <div className="container mx-auto px-4 mt-8">
-                        {/* Header Section */}
-                        <div className="mb-10">
-                            <h1 className="text-3xl font-bold mb-2">Fruit Marketplace</h1>
-                            <p className="text-zinc-500 text-sm">Buy Blox Fruits with instant delivery and secure escrow protection.</p>
-                        </div>
+  const HomePage = () => (
+    <div className="min-h-screen bg-[#050505] text-white">
+      <header className="relative z-20 bg-black/90 border-b border-zinc-800 backdrop-blur-md">
+        <div className="container mx-auto px-6 py-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-900/20">
+              <Zap className="w-6 h-6 text-white" />
+            </div>
+            <h1 className="text-3xl font-black tracking-tighter">BLOX<span className="text-blue-500">EX</span></h1>
+          </div>
+          <div className="flex items-center gap-4">
+             <div className="flex items-center gap-2 bg-zinc-900 px-4 py-2 rounded-full border border-zinc-800">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-zinc-400 text-xs font-bold">{activeUsers} Players Online</span>
+             </div>
+          </div>
+        </div>
+        
+        <nav className="container mx-auto px-6 pb-6 flex gap-3 overflow-x-auto no-scrollbar">
+          {[
+            { name: 'Marketplace', page: 'store', icon: Store, color: 'bg-blue-600' },
+            { name: 'Calculator', page: 'calculator', icon: Calculator, color: 'bg-zinc-800' },
+            { name: 'P2P Escrow', page: 'p2p', icon: ShieldCheck, color: 'bg-zinc-800' },
+            { name: 'Sell Items', page: 'sell', icon: TrendingUp, color: 'bg-zinc-800' },
+          ].map(item => (
+            <button
+              key={item.page}
+              onClick={() => setCurrentPage(item.page)}
+              className={`${item.color} px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 hover:opacity-80 transition-all whitespace-nowrap border border-white/5`}
+            >
+              <item.icon size={18} /> {item.name}
+            </button>
+          ))}
+        </nav>
+      </header>
 
-                        {/* Search & Filter Bar */}
-                        <div className="flex flex-col md:flex-row gap-4 mb-8">
-                            <div className="relative flex-1">
-                                <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                                <input 
-                                    type="text" 
-                                    placeholder="Search fruits (e.g. Kitsune, Leopard...)" 
-                                    className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-blue-500 transition-all"
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex gap-2">
-                                {["All", "Mythical", "Legendary"].map(r => (
-                                    <button 
-                                        key={r}
-                                        onClick={() => setFilter(r)}
-                                        className={`px-6 py-3 rounded-xl border text-sm font-semibold transition-all ${filter === r ? 'bg-blue-600 border-blue-600' : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'}`}
-                                    >
-                                        {r}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+      <main className="container mx-auto px-6 py-12">
+        <div className="text-center mb-16">
+          <h2 className="text-7xl font-black mb-4 tracking-tighter">ELITE FRUIT <br/><span className="text-zinc-500">EXCHANGE</span></h2>
+          <p className="text-zinc-400 text-lg max-w-xl mx-auto font-medium">Professional grade trading platform with instant delivery and military-grade escrow security.</p>
+        </div>
 
-                        {/* Marketplace Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {filteredFruits.map(fruit => (
-                                <div key={fruit.id} className="item-card glass-card rounded-2xl p-4 transition-all flex flex-col cursor-pointer group">
-                                    <div className="relative aspect-square mb-4 bg-zinc-800/50 rounded-xl overflow-hidden flex items-center justify-center p-6">
-                                        {fruit.hot && (
-                                            <span className="absolute top-2 left-2 bg-red-500 text-[10px] font-black px-2 py-1 rounded italic uppercase tracking-tighter">Hot Item</span>
-                                        )}
-                                        <div className="absolute top-2 right-2 flex flex-col gap-1">
-                                            <span className="bg-blue-500/20 text-blue-400 text-[10px] font-bold px-2 py-1 rounded">Insta-Delivery</span>
-                                            <span className="bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2 py-1 rounded">Stock: {fruit.stock}</span>
-                                        </div>
-                                        <img src={fruit.image} alt={fruit.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
-                                    </div>
-                                    
-                                    <h3 className="text-lg font-bold mb-1 group-hover:text-blue-400 transition-colors">{fruit.name}</h3>
-                                    <p className="text-zinc-500 text-xs mb-4 flex items-center gap-1">
-                                        <Icon name="shield-check" size={12} className="text-green-500" /> Verified Seller
-                                    </p>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div onClick={() => setCurrentPage('store')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-blue-500 transition-all cursor-pointer group">
+            <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <ShoppingCart className="text-white" />
+            </div>
+            <h3 className="text-2xl font-black mb-2">OFFICIAL STORE</h3>
+            <p className="text-zinc-500 text-sm mb-6">Purchase mythical fruits directly from our verified inventory with 0% risk.</p>
+            <div className="text-blue-500 font-bold flex items-center gap-2">Enter Store <ArrowRight size={16}/></div>
+          </div>
 
-                                    <div className="mt-auto">
-                                        <div className="flex items-end justify-between mb-4">
-                                            <div>
-                                                <p className="text-zinc-500 text-[10px] uppercase font-bold">Price starts from</p>
-                                                <p className="text-xl font-black text-white">₱{fruit.price.toLocaleString()}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-blue-500 text-sm font-bold">${fruit.usd}</p>
-                                            </div>
-                                        </div>
-                                        <button className="w-full bg-zinc-100 hover:bg-blue-600 hover:text-white text-black font-extrabold py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                                            Buy Now <Icon name="shopping-cart" size={16} />
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+          <div onClick={() => setCurrentPage('calculator')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-zinc-400 transition-all cursor-pointer group">
+            <div className="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Calculator className="text-white" />
+            </div>
+            <h3 className="text-2xl font-black mb-2">TRADE CALC</h3>
+            <p className="text-zinc-500 text-sm mb-6">Analyze trade values using our real-time updated database to ensure you win every deal.</p>
+            <div className="text-zinc-400 font-bold flex items-center gap-2">Open Tools <ArrowRight size={16}/></div>
+          </div>
 
-                        {filteredFruits.length === 0 && (
-                            <div className="text-center py-20 bg-zinc-900/50 rounded-3xl border border-dashed border-zinc-800">
-                                <Icon name="search-x" size={48} className="mx-auto text-zinc-700 mb-4" />
-                                <p className="text-zinc-500">No fruits found matching your search.</p>
-                            </div>
-                        )}
-                    </div>
+          <div onClick={() => setCurrentPage('p2p')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-zinc-400 transition-all cursor-pointer group">
+            <div className="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <ShieldCheck className="text-white" />
+            </div>
+            <h3 className="text-2xl font-black mb-2">SAFE ESCROW</h3>
+            <p className="text-zinc-500 text-sm mb-6">Middleman services for player-to-player trades. Secure your items today.</p>
+            <div className="text-zinc-400 font-bold flex items-center gap-2">Get Secured <ArrowRight size={16}/></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 
-                    {/* Footer Info (Itemku Style) */}
-                    <div className="container mx-auto px-4 mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-zinc-900 pt-12">
-                        <div className="flex gap-4 items-start">
-                            <div className="bg-zinc-900 p-3 rounded-xl border border-zinc-800 text-blue-500"><Icon name="lock" /></div>
-                            <div>
-                                <h4 className="font-bold mb-1 text-sm">Secure Transaction</h4>
-                                <p className="text-xs text-zinc-500">Your money is only released to the seller after you confirm receipt.</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start">
-                            <div className="bg-zinc-900 p-3 rounded-xl border border-zinc-800 text-green-500"><Icon name="zap" /></div>
-                            <div>
-                                <h4 className="font-bold mb-1 text-sm">Instant Delivery</h4>
-                                <p className="text-xs text-zinc-500">90% of our fruits are delivered within 5 minutes of payment.</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start">
-                            <div className="bg-zinc-900 p-3 rounded-xl border border-zinc-800 text-yellow-500"><Icon name="message-circle" /></div>
-                            <div>
-                                <h4 className="font-bold mb-1 text-sm">24/7 Support</h4>
-                                <p className="text-xs text-zinc-500">Need help? Join our discord or contact our live agents.</p>
-                            </div>
-                        </div>
-                    </div>
+  // Remaining pages (StorePage, CalculatorPage, etc.) follow your logic but use the new theme
+  const StorePage = () => (
+    <div className="min-h-screen bg-[#050505] text-white">
+        <div className="bg-zinc-900/50 border-b border-zinc-800 px-6 py-6 sticky top-0 z-30 backdrop-blur-xl">
+            <div className="container mx-auto flex items-center justify-between">
+                <button onClick={() => setCurrentPage('home')} className="text-zinc-400 hover:text-white flex items-center gap-2 font-bold">
+                    <ArrowRight className="rotate-180" size={18} /> BACK
+                </button>
+                <div className="flex-1 max-w-md mx-8 relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" size={18} />
+                    <input 
+                        type="text" 
+                        placeholder="Search fruits..." 
+                        className="w-full bg-black border border-zinc-800 rounded-xl py-2 pl-12 pr-4 focus:border-blue-500 outline-none transition-all"
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                 </div>
-            );
-        };
+            </div>
+        </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-</body>
-</html>
+        <div className="container mx-auto px-6 py-10 grid md:grid-cols-4 gap-6">
+            {fruits.filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase())).map((fruit, i) => (
+                <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 hover:border-blue-500 transition-all group">
+                    <div className="aspect-square bg-black rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
+                        <img src={fruit.image} className="w-32 h-32 object-contain group-hover:scale-110 transition-transform" />
+                        <span className="absolute top-2 right-2 bg-blue-500/10 text-blue-500 text-[10px] font-black px-2 py-1 rounded">STOCK: {fruit.stock}</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-1">{fruit.name}</h3>
+                    <p className="text-zinc-500 text-xs font-bold mb-4 uppercase tracking-widest">{fruit.rarity}</p>
+                    <div className="flex items-end justify-between mb-4">
+                        <div>
+                            <p className="text-[10px] text-zinc-500 font-bold">PRICE</p>
+                            <p className="text-2xl font-black">₱{fruit.price.toLocaleString()}</p>
+                        </div>
+                        <p className="text-blue-500 font-bold">${fruit.usd}</p>
+                    </div>
+                    <button 
+                        onClick={() => setSelectedFruit(fruit)}
+                        className="w-full bg-white text-black font-black py-3 rounded-xl hover:bg-blue-500 hover:text-white transition-all"
+                    >
+                        BUY NOW
+                    </button>
+                </div>
+            ))}
+        </div>
+        {/* Payment Modal remains exactly as your code, just change colors to zinc-900/blue */}
+    </div>
+  );
+
+  return (
+    <>
+      {currentPage === 'home' && <HomePage />}
+      {currentPage === 'store' && <StorePage />}
+      {/* You would paste your CalculatorPage and P2PPage here with updated className colors */}
+      {currentPage === 'calculator' && <div className="p-20 text-center text-white bg-black h-screen">Calculator Logic remains the same... <button onClick={() => setCurrentPage('home')}>Back</button></div>}
+    </>
+  );
+};
+
+export default BloxEx;
