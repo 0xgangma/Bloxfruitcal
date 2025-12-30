@@ -1,52 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Bloxfruit Exchange</title>
-<link rel="stylesheet" href="assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloxfruit Exchange</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+        @keyframes floatParticle { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(20px, -20px) scale(1.1); } }
+    </style>
 </head>
 <body>
+    <div id="root"></div>
 
-<div class="loader"><div></div></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        // Mocking Lucide icons for browser compatibility
+        const { ShieldCheck, Calculator, Store, TrendingUp, Users, Star, ChevronRight, CheckCircle, Lock, Zap, Award, ArrowRight, Sparkles } = {
+            ShieldCheck: (props) => <i data-lucide="shield-check" {...props}></i>,
+            Calculator: (props) => <i data-lucide="calculator" {...props}></i>,
+            Store: (props) => <i data-lucide="store" {...props}></i>,
+            TrendingUp: (props) => <i data-lucide="trending-up" {...props}></i>,
+            Users: (props) => <i data-lucide="users" {...props}></i>,
+            Star: (props) => <i data-lucide="star" {...props}></i>,
+            ChevronRight: (props) => <i data-lucide="chevron-right" {...props}></i>,
+            CheckCircle: (props) => <i data-lucide="check-circle" {...props}></i>,
+            Lock: (props) => <i data-lucide="lock" {...props}></i>,
+            Zap: (props) => <i data-lucide="zap" {...props}></i>,
+            Award: (props) => <i data-lucide="award" {...props}></i>,
+            ArrowRight: (props) => <i data-lucide="arrow-right" {...props}></i>,
+            Sparkles: (props) => <i data-lucide="sparkles" {...props}></i>
+        };
 
-<header>
-  <h1>Bloxfruit Exchange</h1>
-  <p>#1 Blox Fruits Trading & Escrow Platform</p>
-  <nav>
-    <a href="calculator.html">Calculator</a>
-    <a href="p2p.html">P2P Escrow</a>
-    <a href="store.html">Official Store</a>
-    <a href="sell.html">Sell to Us</a>
-    <a href="rules.html">Rules</a>
-  </nav>
-</header>
+        const BloxfruitExchange = () => {
+            const [currentPage, setCurrentPage] = useState('home');
+            const [activeUsers, setActiveUsers] = useState(68);
+            const [loading, setLoading] = useState(true);
+            const [selectedFruit, setSelectedFruit] = useState(null);
+            const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-<div class="container">
-  <div class="grid">
-    <div class="card">
-      <h2>🔐 Secure P2P Escrow</h2>
-      <p>Manual midman • 5% fee • 5–15 mins</p>
-      <button onclick="location.href='p2p.html'">Start Trade</button>
-    </div>
+            useEffect(() => { lucide.createIcons(); });
 
-    <div class="card">
-      <h2>📊 Trade Calculator</h2>
-      <p>Real-time win / lose analysis</p>
-      <button onclick="location.href='calculator.html'">Open</button>
-    </div>
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setMousePosition({
+                        x: (e.clientX / window.innerWidth - 0.5) * 20,
+                        y: (e.clientY / window.innerHeight - 0.5) * 20
+                    });
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
 
-    <div class="card">
-      <h2>👥 Live Users</h2>
-      <p><span id="users">68</span> active traders now</p>
-    </div>
-  </div>
-</div>
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setActiveUsers(prev => {
+                        const change = Math.floor(Math.random() * 5) - 2;
+                        return Math.max(50, Math.min(120, prev + change));
+                    });
+                }, 3000);
+                return () => clearInterval(interval);
+            }, []);
 
-<footer>
-  Discord: <a href="https://discord.gg/9ZVDy2tsx7">Join Server</a><br>
-  Not affiliated with Roblox
-</footer>
+            useEffect(() => {
+                setTimeout(() => setLoading(false), 2500);
+            }, []);
 
-<script src="assets/app.js"></script>
+            const fruits = [
+                { name: 'Leopard', price: 3000, usd: 60, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c4/Leopard_Fruit.png', perm: 5000, permUsd: 100, glow: '#ff00ff' },
+                { name: 'Dragon', price: 2800, usd: 56, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a9/Dragon_Fruit.png', perm: 4500, permUsd: 90, glow: '#ff4444' },
+                { name: 'Dough V2', price: 2600, usd: 52, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/5/55/Dough_Fruit.png', perm: 4000, permUsd: 80, glow: '#ff88ff' },
+                { name: 'Shadow', price: 2400, usd: 48, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/4/49/Shadow_Fruit.png', perm: 3800, permUsd: 76, glow: '#8800ff' },
+                { name: 'Venom', price: 2200, usd: 44, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e6/Venom_Fruit.png', perm: 3500, permUsd: 70, glow: '#00ff88' },
+                { name: 'Spirit', price: 2000, usd: 40, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3f/Spirit_Fruit.png', perm: 3200, permUsd: 64, glow: '#00ddff' },
+                { name: 'Blizzard', price: 1800, usd: 36, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/d/d4/Blizzard_Fruit.png', perm: 3000, permUsd: 60, glow: '#00ccff' },
+                { name: 'Gravity', price: 1500, usd: 30, rarity: 'Rare', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/2/22/Gravity_Fruit.png', perm: 2500, permUsd: 50, glow: '#8844ff' },
+                { name: 'Buddha', price: 2500, usd: 50, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/b/b5/Buddha_Fruit.png', perm: 4200, permUsd: 84, glow: '#ffaa00' },
+                { name: 'Phoenix', price: 1800, usd: 36, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e3/Phoenix_Fruit.png', perm: 3000, permUsd: 60, glow: '#ff6600' },
+                { name: 'Rumble', price: 2100, usd: 42, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/f/f5/Rumble_Fruit.png', perm: 3400, permUsd: 68, glow: '#ffff00' },
+                { name: 'Mammoth', price: 2700, usd: 54, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a7/Mammoth_Fruit.png', perm: 4300, permUsd: 86, glow: '#ff8844' },
+            ];
+
+            if (loading) {
+                return (
+                    <div className="min-h-screen bg-black flex items-center justify-center overflow-hidden relative">
+                        <div className="absolute inset-0">
+                            {[...Array(50)].map((_, i) => (
+                                <div key={i} className="absolute bg-purple-500 rounded-full opacity-20"
+                                    style={{
+                                        width: Math.random() * 4 + 2 + 'px',
+                                        height: Math.random() * 4 + 2 + 'px',
+                                        left: Math.random() * 100 + '%',
+                                        top: Math.random() * 100 + '%',
+                                        animation: `float ${Math.random() * 3 + 2}s ease-in-out infinite`,
+                                        animationDelay: Math.random() * 2 + 's'
+                                    }} />
+                            ))}
+                        </div>
+                        <div className="text-center relative z-10">
+                            <div className="relative w-40 h-40 mx-auto mb-8">
+                                <div className="absolute inset-0 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                                <div className="absolute inset-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full animate-pulse flex items-center justify-center">
+                                    <Sparkles className="w-12 h-12 text-white" />
+                                </div>
+                            </div>
+                            <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 mb-3 animate-pulse">BLOXFRUIT EXCHANGE</h2>
+                            <p className="text-purple-400 text-lg font-semibold">Initializing Premium Trading Platform...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            const HomePage = () => (
+                <div className="min-h-screen bg-black text-white overflow-hidden relative">
+                    <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20 pointer-events-none"></div>
+                    <div className="fixed inset-0 opacity-10 pointer-events-none">
+                        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(139, 92, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.3) 1px, transparent 1px)', backgroundSize: '50px 50px', animation: 'gridMove 20s linear infinite' }}></div>
+                    </div>
+                    <header className="relative z-20 bg-black/60 backdrop-blur-2xl border-b border-purple-500/20 p-8 shadow-2xl">
+                        <div className="text-center">
+                            <h1 className="text-7xl font-black mb-3 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">BLOXFRUIT EXCHANGE</h1>
+                            <nav className="flex justify-center gap-3 mt-6">
+                                <button onClick={() => setCurrentPage('calculator')} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 rounded-xl font-bold hover:scale-105 transition-all"><Calculator size={20}/> Calculator</button>
+                                <button onClick={() => setCurrentPage('p2p')} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-xl font-bold hover:scale-105 transition-all"><ShieldCheck size={20}/> P2P Escrow</button>
+                                <button onClick={() => setCurrentPage('store')} className="flex items-center gap-2 bg-gradient-to-r from-pink-600 to-red-600 px-6 py-3 rounded-xl font-bold hover:scale-105 transition-all"><Store size={20}/> Store</button>
+                            </nav>
+                        </div>
+                    </header>
+                    <main className="container mx-auto px-4 py-16 relative z-10">
+                         <div className="grid md:grid-cols-3 gap-8 mb-16">
+                            <div className="bg-black/50 border border-purple-500/30 p-8 rounded-3xl text-center">
+                                <Zap className="mx-auto text-yellow-400 mb-4" size={48} />
+                                <h3 className="text-2xl font-bold">5-15 MIN TRADES</h3>
+                                <p className="text-gray-400">Fast processing guaranteed.</p>
+                            </div>
+                            <div className="bg-black/50 border border-purple-500/30 p-8 rounded-3xl text-center">
+                                <ShieldCheck className="mx-auto text-green-400 mb-4" size={48} />
+                                <h3 className="text-2xl font-bold">100% SECURE</h3>
+                                <p className="text-gray-400">Verified middlemen only.</p>
+                            </div>
+                            <div className="bg-black/50 border border-purple-500/30 p-8 rounded-3xl text-center">
+                                <Users className="mx-auto text-blue-400 mb-4" size={48} />
+                                <h3 className="text-2xl font-bold">{activeUsers} ONLINE</h3>
+                                <p className="text-gray-400">Traders active now.</p>
+                            </div>
+                         </div>
+                         <div className="text-center">
+                            <a href="https://discord.gg/9ZVDy2tsx7" target="_blank" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-full text-xl transition-all">Join Discord Community</a>
+                         </div>
+                    </main>
+                </div>
+            );
+
+            const CalculatorPage = () => {
+                const [offerItems, setOfferItems] = useState([{ fruit: '', quantity: 1 }]);
+                const [receiveItems, setReceiveItems] = useState([{ fruit: '', quantity: 1 }]);
+                const offerTotal = offerItems.reduce((sum, item) => sum + (fruits.find(f => f.name === item.fruit)?.price || 0) * item.quantity, 0);
+                const receiveTotal = receiveItems.reduce((sum, item) => sum + (fruits.find(f => f.name === item.fruit)?.price || 0) * item.quantity, 0);
+                const result = offerTotal > receiveTotal ? 'LOSE' : offerTotal < receiveTotal ? 'WIN' : 'FAIR';
+
+                return (
+                    <div className="min-h-screen bg-black text-white p-8">
+                        <button onClick={() => setCurrentPage('home')} className="mb-8 text-purple-400 font-bold">← BACK HOME</button>
+                        <h2 className="text-5xl font-black text-center mb-12">TRADE CALCULATOR</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div className="bg-red-900/20 p-6 rounded-2xl border border-red-500/50">
+                                <h3 className="text-xl font-bold mb-4">YOU GIVE: ₱{offerTotal}</h3>
+                                {offerItems.map((item, i) => (
+                                    <select key={i} className="w-full bg-black border border-red-500/30 p-2 mb-2" onChange={(e) => {
+                                        const n = [...offerItems]; n[i].fruit = e.target.value; setOfferItems(n);
+                                    }}>
+                                        <option value="">Select Fruit</option>
+                                        {fruits.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+                                    </select>
+                                ))}
+                                <button onClick={() => setOfferItems([...offerItems, {fruit:'', quantity:1}])} className="text-sm">+ Add Item</button>
+                            </div>
+                            <div className="bg-green-900/20 p-6 rounded-2xl border border-green-500/50">
+                                <h3 className="text-xl font-bold mb-4">YOU GET: ₱{receiveTotal}</h3>
+                                {receiveItems.map((item, i) => (
+                                    <select key={i} className="w-full bg-black border border-green-500/30 p-2 mb-2" onChange={(e) => {
+                                        const n = [...receiveItems]; n[i].fruit = e.target.value; setReceiveItems(n);
+                                    }}>
+                                        <option value="">Select Fruit</option>
+                                        {fruits.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+                                    </select>
+                                ))}
+                                <button onClick={() => setReceiveItems([...receiveItems, {fruit:'', quantity:1}])} className="text-sm">+ Add Item</button>
+                            </div>
+                        </div>
+                        <div className="mt-8 text-center text-6xl font-black text-purple-500">{result}</div>
+                    </div>
+                );
+            };
+
+            const StorePage = () => (
+                <div className="min-h-screen bg-black text-white p-8">
+                    <button onClick={() => setCurrentPage('home')} className="mb-8 text-purple-400 font-bold">← BACK HOME</button>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {fruits.map((f, i) => (
+                            <div key={i} className="bg-gray-900 border border-purple-500/30 p-6 rounded-2xl text-center">
+                                <img src={f.image} className="w-24 h-24 mx-auto mb-4" />
+                                <h4 className="text-xl font-bold">{f.name}</h4>
+                                <p className="text-purple-400">₱{f.price}</p>
+                                <button className="mt-4 bg-purple-600 px-4 py-2 rounded-lg">Buy Now</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+
+            const P2PPage = () => (
+                <div className="min-h-screen bg-black text-white p-8 text-center">
+                    <button onClick={() => setCurrentPage('home')} className="mb-8 text-purple-400 font-bold">← BACK HOME</button>
+                    <h2 className="text-5xl font-black mb-6">P2P ESCROW</h2>
+                    <p className="text-xl text-gray-400 mb-8">Secure trades facilitated by our staff.</p>
+                    <div className="max-w-md mx-auto bg-gray-900 p-8 rounded-2xl border border-purple-500">
+                        <p>Join our Discord to open a trade ticket.</p>
+                        <a href="https://discord.gg/9ZVDy2tsx7" className="block mt-4 bg-indigo-600 py-3 rounded-xl font-bold">Open Ticket</a>
+                    </div>
+                </div>
+            );
+
+            if (currentPage === 'home') return <HomePage />;
+            if (currentPage === 'calculator') return <CalculatorPage />;
+            if (currentPage === 'store') return <StorePage />;
+            if (currentPage === 'p2p') return <P2PPage />;
+            return <HomePage />;
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<BloxfruitExchange />);
+    </script>
 </body>
 </html>
