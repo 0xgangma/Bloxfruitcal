@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Bloxfruit Exchange</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body onload="activeUsers()">
-<div class="loader"><div class="spin"></div></div>
+<body>
+
+<div class="loader"><div></div></div>
 
 <header>
-<h1>Bloxfruit Exchange</h1>
-<p>The trusted Blox Fruits trading & escrow platform</p>
-<nav>
-<a href="calculator.html">Calculator</a>
-<a href="p2p.html">P2P Midman</a>
-<a href="store.html">Store</a>
-<a href="sell.html">Sell to Us</a>
-<a href="rules.html">Rules</a>
-</nav>
+  <h1>Bloxfruit Exchange</h1>
+  <p>#1 Blox Fruits Trading & Escrow Platform</p>
+  <nav>
+    <a href="calculator.html">Calculator</a>
+    <a href="p2p.html">P2P Escrow</a>
+    <a href="store.html">Official Store</a>
+    <a href="sell.html">Sell to Us</a>
+    <a href="rules.html">Rules</a>
+  </nav>
 </header>
 
 <div class="container">
-<div class="card">
-<h2>Why Trust Us</h2>
-<ul>
-<li>Manual escrow with time control (5–15 mins)</li>
-<li>Clear 5% fee – no hidden charges</li>
-<li>Discord & Messenger tickets</li>
-<li>Community-driven pricing</li>
-</ul>
+  <div class="grid">
+    <div class="card">
+      <h2>🔐 Secure P2P Escrow</h2>
+      <p>Manual midman • 5% fee • 5–15 mins</p>
+      <button onclick="location.href='p2p.html'">Start Trade</button>
+    </div>
+
+    <div class="card">
+      <h2>📊 Trade Calculator</h2>
+      <p>Real-time win / lose analysis</p>
+      <button onclick="location.href='calculator.html'">Open</button>
+    </div>
+
+    <div class="card">
+      <h2>👥 Live Users</h2>
+      <p><span id="users">68</span> active traders now</p>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-<h3>🔥 Active Users</h3>
-<p><span id="active">150</span> users online</p>
-</div>
+<footer>
+  Discord: <a href="https://discord.gg/9ZVDy2tsx7">Join Server</a><br>
+  Not affiliated with Roblox
+</footer>
 
-<div class="card">
-<h3>Join our Discord</h3>
-<a href="https://discord.gg/9ZVDy2tsx7" target="_blank">
-<button>Join Server</button>
-</a>
-</div>
-</div>
-
-<footer>© 2025 Bloxfruit Exchange</footer>
 <script src="assets/app.js"></script>
 </body>
 </html>
