@@ -1,69 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Bloxfruitcal – Blox Fruits Trade Calculator</title>
-
-<meta name="description" content="Accurate Blox Fruits trade calculator. Know if your trade is win, fair, or loss before accepting.">
-
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
+<title>Bloxfruit Exchange</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
+<body onload="activeUsers()">
+<div class="loader"><div class="spin"></div></div>
 
-<body>
+<header>
+<h1>Bloxfruit Exchange</h1>
+<p>The trusted Blox Fruits trading & escrow platform</p>
+<nav>
+<a href="calculator.html">Calculator</a>
+<a href="p2p.html">P2P Midman</a>
+<a href="store.html">Store</a>
+<a href="sell.html">Sell to Us</a>
+<a href="rules.html">Rules</a>
+</nav>
+</header>
 
-<!-- Micro Loader -->
-<div id="loader">
-  <div class="spinner"></div>
+<div class="container">
+<div class="card">
+<h2>Why Trust Us</h2>
+<ul>
+<li>Manual escrow with time control (5–15 mins)</li>
+<li>Clear 5% fee – no hidden charges</li>
+<li>Discord & Messenger tickets</li>
+<li>Community-driven pricing</li>
+</ul>
 </div>
 
-<div class="app hidden">
-
-  <header>
-    <h1>Bloxfruitcal</h1>
-    <p class="tagline">Know your trade before you accept.</p>
-  </header>
-
-  <label class="label">Value Preset</label>
-  <select id="preset" onchange="applyPreset()">
-    <option value="stable">Stable</option>
-    <option value="demand">High Demand</option>
-    <option value="risky">Risky</option>
-  </select>
-
-  <section class="trade-section">
-    <h3>You Give</h3>
-    <div id="giveList"></div>
-    <button onclick="addItem('give')">+ Add Item</button>
-    <p>Total: <strong><span id="giveTotal">0</span></strong></p>
-  </section>
-
-  <section class="trade-section">
-    <h3>You Receive</h3>
-    <div id="receiveList"></div>
-    <button onclick="addItem('receive')">+ Add Item</button>
-    <p>Total: <strong><span id="receiveTotal">0</span></strong></p>
-  </section>
-
-  <button class="calc" onclick="calculate()">Analyze Trade</button>
-
-  <div class="result-box">
-    <div id="difference"></div>
-    <div id="fairness"></div>
-    <div id="rating"></div>
-    <div id="result"></div>
-    <div id="suggestion"></div>
-  </div>
-
-  <button class="share" onclick="shareTrade()">📤 Share Result</button>
-
-  <footer>
-    <p>© 2025 Bloxfruitcal • Community-based values</p>
-  </footer>
-
+<div class="card">
+<h3>🔥 Active Users</h3>
+<p><span id="active">150</span> users online</p>
 </div>
 
-<script src="script.js"></script>
+<div class="card">
+<h3>Join our Discord</h3>
+<a href="https://discord.gg/9ZVDy2tsx7" target="_blank">
+<button>Join Server</button>
+</a>
+</div>
+</div>
+
+<footer>© 2025 Bloxfruit Exchange</footer>
+<script src="assets/app.js"></script>
 </body>
 </html>
