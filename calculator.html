@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Trade Calculator</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="loader"><div class="spin"></div></div>
+
+<header><h2>Trade Calculator</h2></header>
+
+<div class="container card">
+<div id="give"></div>
+<button onclick="add('give')">Add Give</button>
+<p>Total Give: <b id="gt">0</b></p>
+
+<div id="take"></div>
+<button onclick="add('take')">Add Receive</button>
+<p>Total Receive: <b id="rt">0</b></p>
+
+<button onclick="calc()">Analyze</button>
+<h3 id="res"></h3>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+function add(id){
+const d=document.getElementById(id);
+const s=document.createElement("select");
+s.innerHTML=`<option value=0>Select</option>`+
+Object.entries(ITEMS).map(([k,v])=>`<option value=${v}>${k} (${v})</option>`).join("");
+s.onchange=calc;
+d.appendChild(s);
+}
+function sum(id){
+return [...document.getElementById(id).querySelectorAll("select")]
+.reduce((t,s)=>t+ +s.value,0);
+}
+function calc(){
+gt.textContent=sum("give");
+rt.textContent=sum("take");
+const diff=rt.textContent-gt.textContent;
+res.textContent=diff>0?"WIN":"diff==0?"FAIR":"LOSE";
+}
+add("give");add("take");
+</script>
+</body>
+</html>
