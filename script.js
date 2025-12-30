@@ -1,4 +1,4 @@
-let baseValues = {
+const baseValues = {
   Dragon: 400,
   Leopard: 350,
   Dough: 300,
@@ -15,25 +15,29 @@ let baseValues = {
 
 let values = {...baseValues};
 
+document.addEventListener("DOMContentLoaded", () => {
+  loader.style.display = "none";
+  document.querySelector(".app").classList.remove("hidden");
+
+  addItem("give");
+  addItem("receive");
+});
+
 function applyPreset() {
-  let p = document.getElementById("preset").value;
   values = {...baseValues};
+  const p = preset.value;
 
   if (p === "demand") {
     values.Dragon += 50;
     values.Leopard += 40;
     values.Dough += 30;
   }
-
   if (p === "risky") {
     values.Control -= 20;
     values.Shadow -= 20;
   }
 
-  document.querySelectorAll("select").forEach(s => {
-    if (values[s.options[s.selectedIndex]?.text.split(" (")[0]])
-      s.value = values[s.options[s.selectedIndex].text.split(" (")[0]];
-  });
+  updateTotals();
 }
 
 function addItem(type) {
@@ -42,15 +46,16 @@ function addItem(type) {
   r.className = "select-row";
 
   const s = document.createElement("select");
-  s.innerHTML = `<option value="0">Select</option>` +
+  s.innerHTML =
+    `<option value="0">Select Item</option>` +
     Object.entries(values).map(([k,v]) =>
       `<option value="${v}">${k} (${v})</option>`).join("");
 
   s.onchange = updateTotals;
 
   const x = document.createElement("button");
-  x.innerText = "✕";
   x.className = "remove";
+  x.textContent = "✕";
   x.onclick = () => { r.remove(); updateTotals(); };
 
   r.append(s,x);
@@ -59,53 +64,53 @@ function addItem(type) {
 
 function sum(id) {
   return [...document.getElementById(id).querySelectorAll("select")]
-    .reduce((t,s)=>t+Number(s.value),0);
+    .reduce((t,s)=>t + Number(s.value),0);
 }
 
 function updateTotals() {
-  giveTotal.innerText = sum("giveList");
-  receiveTotal.innerText = sum("receiveList");
+  giveTotal.textContent = sum("giveList");
+  receiveTotal.textContent = sum("receiveList");
 }
 
 function calculate() {
-  let g = +giveTotal.innerText;
-  let r = +receiveTotal.innerText;
-  if(!g||!r) return;
+  const g = +giveTotal.textContent;
+  const r = +receiveTotal.textContent;
+  if (!g || !r) return;
 
-  let diff = r - g;
-  let fairness = Math.min(100, Math.round((Math.min(g,r)/Math.max(g,r))*100));
+  const diff = r - g;
+  const fair = Math.round((Math.min(g,r)/Math.max(g,r))*100);
 
-  difference.innerText = `Difference: ${diff>0?"+":""}${diff}`;
-  fairness.innerText = `Fairness: ${fairness}%`;
+  difference.textContent = `Difference: ${diff>0?"+":""}${diff}`;
+  fairness.textContent = `Fairness: ${fair}%`;
 
-  let rate = diff >= 100 ? "S"
-           : diff >= 30  ? "A"
-           : diff >= -20 ? "B"
-           : diff >= -60 ? "C"
-           : "L";
+  let rate =
+    diff >= 100 ? "S" :
+    diff >= 30 ? "A" :
+    diff >= -20 ? "B" :
+    diff >= -60 ? "C" : "L";
 
-  rating.innerText = `Rating: ${rate}`;
+  rating.textContent = `Rating: ${rate}`;
 
-  result.innerText =
-    rate === "S" ? "🔥 HUGE WIN" :
-    rate === "A" ? "✅ WIN" :
-    rate === "B" ? "⚖️ FAIR" :
-    rate === "C" ? "⚠️ SLIGHT LOSS" :
-    "❌ BAD TRADE";
+  result.textContent =
+    rate==="S"?"🔥 Huge Win":
+    rate==="A"?"✅ Win":
+    rate==="B"?"⚖️ Fair":
+    rate==="C"?"⚠️ Slight Loss":
+    "❌ Bad Trade";
 
-  suggestion.innerText =
-    diff < 0 ? `Suggestion: Ask +${Math.abs(diff)} value more` :
-    "Suggestion: Trade is acceptable";
+  suggestion.textContent =
+    diff < 0 ? `Suggestion: Ask +${Math.abs(diff)} value more`
+             : "Suggestion: Trade is acceptable";
 }
 
 function shareTrade() {
   const text =
 `Bloxfruitcal Trade Result
-Give: ${giveTotal.innerText}
-Receive: ${receiveTotal.innerText}
-${result.innerText}
-Rating: ${rating.innerText}`;
+Give: ${giveTotal.textContent}
+Receive: ${receiveTotal.textContent}
+${rating.textContent}
+${result.textContent}`;
 
   navigator.clipboard.writeText(text);
-  alert("Trade copied!");
+  alert("Trade result copied!");
 }
