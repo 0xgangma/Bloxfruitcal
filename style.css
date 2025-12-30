@@ -1,0 +1,111 @@
+* {
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0b0b0b;
+  color: white;
+  text-align: center;
+}
+
+/* Loader */
+#loader {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid #333;
+  border-top: 4px solid #00ffcc;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.hidden { display: none; }
+
+.app {
+  padding: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.trade-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #121212;
+  border-radius: 15px;
+}
+
+.select-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+.remove {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0 12px;
+}
+
+button {
+  margin-top: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #00ffcc;
+  color: black;
+}
+
+.calc {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#result {
+  font-size: 22px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+#difference {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #1a1a1a;
+  margin: 5px;
+  padding: 8px;
+  border-radius: 10px;
+  font-size: 14px;
+}
