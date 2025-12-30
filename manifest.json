@@ -1,0 +1,15 @@
+{
+  "name": "Bloxfruitcal",
+  "short_name": "Bloxfruitcal",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#00ffcc",
+  "icons": [
+    {
+      "src": "icons/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
