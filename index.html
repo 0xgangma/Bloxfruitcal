@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloxfruitcal | Trade Calculator</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+
+<div id="loader">
+  <h1>Bloxfruitcal</h1>
+  <div class="spinner"></div>
+</div>
+
+<div class="app hidden">
+
+  <h2>Trade Calculator</h2>
+
+  <label>Value Preset</label>
+  <select id="preset" onchange="applyPreset()">
+    <option value="stable">Stable</option>
+    <option value="demand">High Demand</option>
+    <option value="risky">Risky</option>
+  </select>
+
+  <div class="trade-section">
+    <h3>You Give</h3>
+    <div id="giveList"></div>
+    <button onclick="addItem('give')">+ Add</button>
+    <p>Total: <span id="giveTotal">0</span></p>
+  </div>
+
+  <div class="trade-section">
+    <h3>You Receive</h3>
+    <div id="receiveList"></div>
+    <button onclick="addItem('receive')">+ Add</button>
+    <p>Total: <span id="receiveTotal">0</span></p>
+  </div>
+
+  <button class="calc" onclick="calculate()">Analyze Trade</button>
+
+  <div id="difference"></div>
+  <div id="fairness"></div>
+  <div id="rating"></div>
+  <div id="result"></div>
+  <div id="suggestion"></div>
+
+  <button onclick="shareTrade()">📤 Share Result</button>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
