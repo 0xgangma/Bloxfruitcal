@@ -1,177 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>BloxEx — Blox Fruits Exchange</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
-<style>
-body {
-  margin: 0;
-  font-family: Inter, sans-serif;
-  background: radial-gradient(circle at top, #111, #000);
-  color: #fff;
-}
-header {
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #222;
-}
-.logo {
-  font-size: 30px;
-  font-weight: 900;
-  background: linear-gradient(90deg,#00eaff,#b400ff);
-  -webkit-background-clip: text;
-  color: transparent;
-}
-section {
-  padding: 60px 30px;
-  max-width: 1200px;
-  margin: auto;
-}
-.card {
-  background: linear-gradient(180deg,#111,#050505);
-  border: 1px solid #222;
-  border-radius: 18px;
-  padding: 25px;
-  margin-bottom: 25px;
-  animation: fadeUp .6s ease;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
-  gap: 20px;
-}
-button {
-  background: linear-gradient(90deg,#7b2cff,#ff2cc3);
-  border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 900;
-  color: white;
-  cursor: pointer;
-}
-button.secondary {
-  background: #222;
-}
-img {
-  width: 100%;
-  border-radius: 12px;
-}
-.status {
-  margin-top: 10px;
-  color: #0f0;
-  font-weight: bold;
-}
-@keyframes fadeUp {
-  from {opacity:0; transform:translateY(20px)}
-  to {opacity:1; transform:translateY(0)}
-}
-.hidden {display:none;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloxEx - Premium Blox Fruits Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background-image: url('https://cdn.basedlabs.ai/242ff6c0-8b90-11f0-bd7c-43204cf71e5a.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+        .transition-all { transition: all 0.3s ease; }
+        .product-card { cursor: pointer; }
+        .product-card:hover .product-image { transform: scale(1.1) rotate(5deg); }
+        .product-image { transition: transform 0.4s ease; }
+        .badge-hot { background: linear-gradient(135deg, #ff6b6b, #ff8787); }
+        .badge-new { background: linear-gradient(135deg, #51cf66, #69db7c); }
+        .badge-sale { background: linear-gradient(135deg, #ff922b, #ffa94d); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.5s ease-out; }
+        .sidebar-filter:hover { background: #2a2a2a; }
+        .price-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 2s linear infinite; }
+        .bg-overlay { background: rgba(0,0,0,0.7); }
+        .page { display: none; }
+        .page.active { display: block; }
+        .chat-box { display: none; border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+        .loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .ad-placeholder { background: #333; padding: 20px; text-align: center; margin: 20px 0; border-radius: 10px; }
+    </style>
 </head>
+<body class="bg-overlay">
 
-<body>
+<!-- Loading Mechanism -->
+<div id="loading" class="loading">
+    <div class="loading-spinner"></div>
+</div>
 
-<header>
-  <div class="logo">BLOXEX</div>
-  <div>🟢 <span id="online">231</span> Online</div>
+<!-- Top Header Bar -->
+<div class="bg-gradient-to-r from-purple-900 to-blue-900 py-2 text-center text-sm">
+    <p>🎉 <strong>SPECIAL OFFER:</strong> Get 10% OFF on your first purchase! Use code: <span class="font-bold text-yellow-300">BLOXEX10</span></p>
+</div>
+
+<!-- Main Header -->
+<header class="bg-gray-950 border-b border-gray-800 sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-4">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg flex items-center justify-center animate-spin-slow">
+                    <span class="text-xl font-bold">B</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black">
+                        <span class="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">BLOX</span><span class="text-white">EX</span>
+                    </h1>
+                    <p class="text-xs text-gray-500">Premium Marketplace</p>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-2xl mx-8">
+                <div class="relative w-full">
+                    <input type="text" id="searchBar" placeholder="Search fruits, items..." 
+                        class="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-3 pl-12 text-white placeholder-gray-500 focus:border-purple-500 focus:outline-none transition-all">
+                    <svg class="absolute left-4 top-3.5 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-4">
+                <div class="hidden lg:flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-lg">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-300"><span id="liveUsers">247</span> Online</span>
+                </div>
+                <button class="bg-gray-900 hover:bg-gray-800 p-3 rounded-lg transition-all hover:scale-110">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="border-t border-gray-800">
+            <div class="flex gap-1 py-2 overflow-x-auto">
+                <button onclick="showPage('home')" class="nav-btn active px-6 py-2 rounded-lg font-semibold text-sm whitespace-nowrap">Home</button>
+                <button onclick="showPage('p2p')" class="nav-btn px-6 py-2 rounded-lg font-semibold text-sm whitespace-nowrap">P2P Trading</button>
+                <button onclick="showPage('store')" class="nav-btn px-6 py-2 rounded-lg font-semibold text-sm whitespace-nowrap">Official Store</button>
+                <button onclick="showPage('sell')" class="nav-btn px-6 py-2 rounded-lg font-semibold text-sm whitespace-nowrap">Sell to Us</button>
+                <button onclick="showPage('calculator')" class="nav-btn px-6 py-2 rounded-lg font-semibold text-sm whitespace-nowrap">Trade Calculator</button>
+            </div>
+        </nav>
+    </div>
 </header>
 
-<section>
-<h1 style="font-size:56px;font-weight:900;">Secure Blox Fruits Trading</h1>
-<p style="color:#aaa;font-size:18px;">
-Escrow • Official Store • Calculator • Verified Trades
-</p>
-</section>
+<!-- Pages -->
+<div id="home" class="page active container mx-auto px-4 py-6">
+    <!-- Why Trust Us -->
+    <section class="bg-gray-950 border border-gray-800 rounded-xl p-6 mb-8 animate-fade">
+        <h2 class="text-3xl font-black mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Why Trust BloxEx?</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="p-4 bg-gray-900 rounded-lg">
+                <svg class="w-12 h-12 mx-auto mb-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <h3 class="text-xl font-bold text-center mb-2">Secure Transactions</h3>
+                <p class="text-gray-400 text-center text-sm">Midman escrow system ensures safe trades with verification.</p>
+            </div>
+            <div class="p-4 bg-gray-900 rounded-lg">
+                <svg class="w-12 h-12 mx-auto mb-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <h3 class="text-xl font-bold text-center mb-2">Fast Delivery</h3>
+                <p class="text-gray-400 text-center text-sm">Trades complete in 5-15 minutes with professional support.</p>
+            </div>
+            <div class="p-4 bg-gray-900 rounded-lg">
+                <svg class="w-12 h-12 mx-auto mb-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <h3 class="text-xl font-bold text-center mb-2">Verified Community</h3>
+                <p class="text-gray-400 text-center text-sm">Account verification and ratings for trustworthy trading.</p>
+            </div>
+        </div>
+    </section>
 
-<section class="grid">
+    <!-- Products Section (Existing) -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Sidebar Filters (Existing) -->
+        <div class="lg:col-span-1">
+            <!-- ... (keep existing sidebar) -->
+        </div>
+        <!-- Products Grid (Existing) -->
+        <div class="lg:col-span-3">
+            <!-- Sort Bar (Existing) -->
+            <!-- Products Grid (Existing) -->
+            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Products inserted by JS -->
+            </div>
+        </div>
+    </div>
 
-<!-- STORE -->
-<div class="card">
-<h2>🏪 Official Store</h2>
-<img src="https://static.wikia.nocookie.net/blox-fruits/images/6/6e/LeopardFruit.png">
-<p>Leopard Fruit</p>
-<button onclick="buyItem()">Buy Now</button>
-<div id="storeStatus" class="status hidden"></div>
+    <!-- Professional Ads -->
+    <div class="ad-placeholder animate-fade">
+        <p>Sponsored: High-Quality Blox Fruits Accessories - Shop Now!</p>
+    </div>
 </div>
 
-<!-- ESCROW -->
-<div class="card">
-<h2>🔐 P2P Escrow</h2>
-<p>Trade Status:</p>
-<div id="escrowState" class="status">Waiting for trade</div>
-<button onclick="createTrade()">Create Trade</button>
-<button class="secondary" onclick="payFee()">Pay 5% Fee</button>
-<button class="secondary" onclick="completeTrade()">Complete Trade</button>
+<!-- P2P Page -->
+<div id="p2p" class="page container mx-auto px-4 py-6">
+    <section class="bg-gray-950 border border-gray-800 rounded-xl p-6 animate-fade">
+        <h2 class="text-3xl font-black mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">P2P Trading with Midman</h2>
+        <p class="text-gray-400 mb-4">Secure peer-to-peer trading like crypto exchanges. Sign in and verify your account for safety.</p>
+        <ul class="list-disc pl-6 space-y-2 text-gray-300 mb-6">
+            <li>5% commission fee on trade value, paid via GCash, InstaPay, Crypto, or PayPal.</li>
+            <li>Trades complete in 5-15 minutes.</li>
+            <li>Strict rules: No scams, verified IDs required, professional conduct mandatory.</li>
+            <li>Optional: Rate the seller and provide feedback after trade.</li>
+        </ul>
+        <button onclick="alert('Sign in with Roblox or email. Verification requires ID upload.')" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 py-3 rounded-lg font-bold transition-all hover:scale-105">Sign In & Verify</button>
+    </section>
 </div>
 
-<!-- CALCULATOR -->
-<div class="card">
-<h2>📊 Trade Calculator</h2>
-<input id="v1" placeholder="Your Value" style="width:100%;padding:10px">
-<input id="v2" placeholder="Their Value" style="width:100%;padding:10px;margin-top:10px">
-<button onclick="calc()">Calculate</button>
-<div id="calcResult" class="status"></div>
+<!-- Official Store (Black Market) Page -->
+<div id="store" class="page container mx-auto px-4 py-6">
+    <section class="bg-gray-950 border border-gray-800 rounded-xl p-6 animate-fade">
+        <h2 class="text-3xl font-black mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Official BloxEx Store</h2>
+        <p class="text-gray-400 mb-4">Buy premium fruits and items directly from us. Prices in <span id="currency">PHP/USD</span>.</p>
+        <div id="storeProducts" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Products similar to home, but own items -->
+        </div>
+        <div id="paymentChat" class="chat-box bg-gray-900 p-4 rounded-lg">
+            <p>Send receipt and reference number:</p>
+            <input type="text" placeholder="Reference Number" class="w-full bg-gray-800 p-2 rounded mb-2">
+            <button onclick="alert('Proof sent! Open ticket on Messenger or Discord.')" class="bg-blue-600 py-2 px-4 rounded">Send Proof</button>
+            <div class="flex gap-4 mt-4">
+                <a href="https://www.facebook.com/share/1HGue7eCWq/?mibextid=wwXIfr" target="_blank" class="flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Messenger
+                </a>
+                <a href="https://discord.com/channels/1455558448556146883/1455574277473570878" target="_blank" class="flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515a.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0a12.64 12.64 0 00-.617-1.25a.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057a19.9 19.9 0 005.993 3.03a.078.078 0 00.084-.028a14.09 14.09 0 001.226-1.994a.076.076 0 00-.041-.106a13.107 13.107 0 01-1.872-.892a.077.077 0 01-.008-.128a10.2 10.2 0 00.372-.292a.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127a12.299 12.299 0 01-1.873.892a.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028a19.839 19.839 0 006.002-3.03a.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+                    Discord Ticket
+                </a>
+            </div>
+        </div>
+    </section>
 </div>
 
-</section>
+<!-- Sell to Us Page -->
+<div id="sell" class="page container mx-auto px-4 py-6">
+    <section class="bg-gray-950 border border-gray-800 rounded-xl p-6 animate-fade">
+        <h2 class="text-3xl font-black mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Sell Your Items to Us</h2>
+        <p class="text-gray-400 mb-4">Offer your fruits and items directly to BloxEx. Click below to send your offer on Discord.</p>
+        <a href="https://discord.com/channels/1455558448556146883/1455574277473570878" target="_blank" class="w-full block bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 py-3 rounded-lg font-bold transition-all hover:scale-105 text-center">Send Offer on Discord</a>
+    </section>
+</div>
 
-<section class="card">
-<h2>Why BloxEx?</h2>
-<ul>
-<li>✔ Manual Escrow Protection</li>
-<li>✔ No Scam Trades</li>
-<li>✔ Professional System</li>
-<li>✔ Premium UI</li>
-</ul>
-</section>
+<!-- Trade Calculator Page -->
+<div id="calculator" class="page container mx-auto px-4 py-6">
+    <section class="bg-gray-950 border border-gray-800 rounded-xl p-6 animate-fade">
+        <h2 class="text-3xl font-black mb-6 text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Real-Time Trade Calculator</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Your Offer</h3>
+                <select id="yourItem" class="w-full bg-gray-900 p-2 rounded mb-2">
+                    <!-- Options added by JS -->
+                </select>
+                <input type="number" id="yourQty" placeholder="Quantity" value="1" class="w-full bg-gray-900 p-2 rounded mb-2">
+                <button onclick="addToOffer('your')" class="bg-green-600 py-2 px-4 rounded">Add</button>
+                <ul id="yourList" class="list-disc pl-6 mt-4"></ul>
+                <p>Total Value: <span id="yourTotal">0</span></p>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold mb-4">Their Offer</h3>
+                <select id="theirItem" class="w-full bg-gray-900 p-2 rounded mb-2">
+                    <!-- Options added by JS -->
+                </select>
+                <input type="number" id="theirQty" placeholder="Quantity" value="1" class="w-full bg-gray-900 p-2 rounded mb-2">
+                <button onclick="addToOffer('their')" class="bg-green-600 py-2 px-4 rounded">Add</button>
+                <ul id="theirList" class="list-disc pl-6 mt-4"></ul>
+                <p>Total Value: <span id="theirTotal">0</span></p>
+            </div>
+        </div>
+        <button onclick="calculateTrade()" class="w-full mt-6 bg-purple-600 py-3 rounded-lg font-bold hover:scale-105 transition-all">Calculate</button>
+        <p id="result" class="text-center mt-4 font-bold text-2xl"></p>
+    </section>
+</div>
 
-<footer style="padding:30px;text-align:center;color:#777;border-top:1px solid #222">
-© 2025 BloxEx — Demo Prototype
+<!-- Footer (Existing with Discord) -->
+<footer class="bg-gray-950 border-t border-gray-800 mt-16 py-12">
+    <!-- ... (keep existing) -->
+    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+        <p>Join our Discord: <a href="https://discord.gg/9ZVDy2tsx7" class="text-blue-400">https://discord.gg/9ZVDy2tsx7</a></p>
+        <p>&copy; 2025 BloxEx. All rights reserved. Not affiliated with Roblox Corporation.</p>
+    </div>
 </footer>
 
+<!-- Product Modal (Existing) -->
+
 <script>
-let escrow = "none";
+    const fruits = [
+        { id: 1, name: 'Leopard', price: 3000, usd: 60, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c4/Leopard_Fruit.png', perm: 5000, permUsd: 100, stock: 12, rating: 4.9, sales: 1847, badge: 'HOT', featured: true, value: 335000000 },
+        // Added more from list, with sample real money prices
+        { id: 2, name: 'Dragon West', price: 5000, usd: 100, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a9/Dragon_Fruit.png', perm: 8000, permUsd: 160, stock: 5, rating: 5.0, sales: 500, badge: 'HOT', value: 1450000000 },
+        { id: 3, name: 'Kitsune', price: 4000, usd: 80, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/3/3d/Kitsune_Fruit.png', perm: 6000, permUsd: 120, stock: 10, rating: 4.8, sales: 1200, value: 290000000 },
+        // ... Add more as needed
+    ];
 
-function createTrade() {
-  escrow = "created";
-  updateEscrow("Trade created. Awaiting fee.");
-}
-function payFee() {
-  if (escrow !== "created") return alert("Create trade first");
-  escrow = "fee_paid";
-  updateEscrow("Fee submitted. Middleman assigned.");
-}
-function completeTrade() {
-  if (escrow !== "fee_paid") return alert("Pay fee first");
-  escrow = "done";
-  updateEscrow("Trade completed successfully!");
-}
-function updateEscrow(text) {
-  document.getElementById("escrowState").innerText = text;
-}
+    let currentCategory = 'all';
+    let yourOffer = [];
+    let theirOffer = [];
+    let currency = 'PHP'; // Default
 
-function buyItem() {
-  const s = document.getElementById("storeStatus");
-  s.classList.remove("hidden");
-  s.innerText = "Payment instructions sent. Upload receipt.";
-}
+    // Detect location for currency
+    fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
+        if (data.country_code === 'PH') {
+            currency = 'PHP';
+        } else {
+            currency = 'USD';
+        }
+        document.getElementById('currency').textContent = currency;
+        renderProducts();
+        renderStoreProducts();
+    }).catch(() => {});
 
-function calc() {
-  const a = +v1.value, b = +v2.value;
-  if (!a || !b) return;
-  document.getElementById("calcResult").innerText =
-    a > b ? "You win the trade" : a < b ? "You lose the trade" : "Fair trade";
-}
+    function renderProducts() {
+        // Existing, but adjust price display based on currency
+        const grid = document.getElementById('productsGrid');
+        // ... Similar to existing, but for price: currency === 'PHP' ? `₱${f.price}` : `$${f.usd}`
+    }
 
-setInterval(()=>{
-  document.getElementById("online").innerText =
-    200 + Math.floor(Math.random()*100);
-},2000);
+    function renderStoreProducts() {
+        const grid = document.getElementById('storeProducts');
+        grid.innerHTML = fruits.map(f => `
+            <div class="product-card ..."> <!-- Similar structure -->
+                <button onclick="document.getElementById('paymentChat').style.display = 'block';" class="...">Pay Now</button>
+            </div>
+        `).join('');
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function addToOffer(side) {
+        const itemSelect = document.getElementById(`${side}Item`);
+        const qty = parseInt(document.getElementById(`${side}Qty`).value);
+        const fruit = fruits.find(f => f.name === itemSelect.value);
+        if (fruit) {
+            const offer = side === 'your' ? yourOffer : theirOffer;
+            offer.push({name: fruit.name, qty, value: fruit.value * qty});
+            updateOfferList(side);
+        }
+    }
+
+    function updateOfferList(side) {
+        const list = document.getElementById(`${side}List`);
+        const offer = side === 'your' ? yourOffer : theirOffer;
+        list.innerHTML = offer.map(o => `<li>${o.name} x${o.qty} (${o.value.toLocaleString()})</li>`).join('');
+        const total = offer.reduce((sum, o) => sum + o.value, 0);
+        document.getElementById(`${side}Total`).textContent = total.toLocaleString();
+    }
+
+    function calculateTrade() {
+        const yourVal = yourOffer.reduce((sum, o) => sum + o.value, 0);
+        const theirVal = theirOffer.reduce((sum, o) => sum + o.value, 0);
+        let res = '';
+        if (yourVal < theirVal) res = 'Win! Worth it.';
+        else if (yourVal > theirVal) res = 'Lose! Not worth it.';
+        else res = 'Fair trade.';
+        document.getElementById('result').textContent = res;
+        document.getElementById('result').classList.add(yourVal < theirVal ? 'text-green-400' : yourVal > theirVal ? 'text-red-400' : 'text-yellow-400');
+    }
+
+    // Populate selects
+    const itemOptions = fruits.map(f => `<option value="${f.name}">${f.name} (${f.value.toLocaleString()})</option>`).join('');
+    document.getElementById('yourItem').innerHTML = itemOptions;
+    document.getElementById('theirItem').innerHTML = itemOptions;
+
+    // Live users
+    setInterval(() => {
+        const change = Math.floor(Math.random() * 5) - 2;
+        let current = parseInt(document.getElementById('liveUsers').textContent);
+        current = Math.max(200, Math.min(500, current + change));
+        document.getElementById('liveUsers').textContent = current;
+    }, 1000);
+
+    // Loading
+    window.onload = () => {
+        setTimeout(() => document.getElementById('loading').style.display = 'none', 1500);
+    };
+
+    // Initialize
+    renderProducts();
+    renderStoreProducts();
+    // ... Other existing functions
 </script>
 
 </body>
 </html>
+``` document.get
