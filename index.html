@@ -1,204 +1,177 @@
-import React, { useState, useEffect } from 'react';
-import { ShieldCheck, Calculator, Store, TrendingUp, Users, Star, ChevronRight, CheckCircle, Lock, Zap, Award, ArrowRight, Sparkles, Filter, Search, X, ShoppingCart } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BloxEx — Blox Fruits Exchange</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 
-const BloxEx = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [activeUsers, setActiveUsers] = useState(247);
-  const [loading, setLoading] = useState(true);
-  const [selectedFruit, setSelectedFruit] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterRarity, setFilterRarity] = useState('all');
-  const [sortBy, setSortBy] = useState('popular');
+<style>
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: radial-gradient(circle at top, #111, #000);
+  color: #fff;
+}
+header {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #222;
+}
+.logo {
+  font-size: 30px;
+  font-weight: 900;
+  background: linear-gradient(90deg,#00eaff,#b400ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+section {
+  padding: 60px 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+.card {
+  background: linear-gradient(180deg,#111,#050505);
+  border: 1px solid #222;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 25px;
+  animation: fadeUp .6s ease;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  gap: 20px;
+}
+button {
+  background: linear-gradient(90deg,#7b2cff,#ff2cc3);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 900;
+  color: white;
+  cursor: pointer;
+}
+button.secondary {
+  background: #222;
+}
+img {
+  width: 100%;
+  border-radius: 12px;
+}
+.status {
+  margin-top: 10px;
+  color: #0f0;
+  font-weight: bold;
+}
+@keyframes fadeUp {
+  from {opacity:0; transform:translateY(20px)}
+  to {opacity:1; transform:translateY(0)}
+}
+.hidden {display:none;}
+</style>
+</head>
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveUsers(prev => {
-        const change = Math.floor(Math.random() * 7) - 3;
-        return Math.max(200, Math.min(350, prev + change));
-      });
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+<body>
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 2200);
-  }, []);
+<header>
+  <div class="logo">BLOXEX</div>
+  <div>🟢 <span id="online">231</span> Online</div>
+</header>
 
-  const fruits = [
-    { name: 'Kitsune', price: 4500, usd: 85, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/e/e4/Kitsune_Fruit.png', perm: 8000, permUsd: 160, glow: '#3b82f6', stock: 5, rating: 5.0, sales: 942 },
-    { name: 'Leopard', price: 3000, usd: 60, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c4/Leopard_Fruit.png', perm: 5000, permUsd: 100, glow: '#64748b', stock: 12, rating: 4.9, sales: 1847 },
-    { name: 'Dragon', price: 2800, usd: 56, rarity: 'Mythical', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/a/a9/Dragon_Fruit.png', perm: 4500, permUsd: 90, glow: '#334155', stock: 8, rating: 4.8, sales: 2156 },
-    { name: 'Dough V2', price: 2600, usd: 52, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/5/55/Dough_Fruit.png', perm: 4000, permUsd: 80, glow: '#94a3b8', stock: 15, rating: 4.9, sales: 3241 },
-    { name: 'Buddha', price: 2500, usd: 50, rarity: 'Legendary', image: 'https://static.wikia.nocookie.net/roblox-blox-piece/images/b/b5/Buddha_Fruit.png', perm: 4200, permUsd: 84, glow: '#3b82f6', stock: 10, rating: 4.9, sales: 3567 },
-  ];
+<section>
+<h1 style="font-size:56px;font-weight:900;">Secure Blox Fruits Trading</h1>
+<p style="color:#aaa;font-size:18px;">
+Escrow • Official Store • Calculator • Verified Trades
+</p>
+</section>
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#050505] flex items-center justify-center overflow-hidden relative">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)',
-            backgroundSize: '100px 100px',
-            animation: 'gridSlide 20s linear infinite'
-          }}></div>
-        </div>
-        
-        <div className="text-center relative z-10">
-          <div className="relative w-48 h-48 mx-auto mb-8">
-            <div className="absolute inset-0 border-4 border-zinc-800 border-t-blue-500 rounded-full animate-spin"></div>
-            <div className="absolute inset-3 border-4 border-zinc-900 border-t-zinc-400 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '2s'}}></div>
-            <div className="absolute inset-8 bg-zinc-900 rounded-full flex items-center justify-center shadow-2xl">
-              <Sparkles className="w-12 h-12 text-blue-500" />
-            </div>
-          </div>
-          <h2 className="text-5xl font-black mb-3 tracking-tighter">
-            <span className="text-white">BLOX</span>
-            <span className="text-blue-500">EX</span>
-          </h2>
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Loading Secure Environment</p>
-        </div>
+<section class="grid">
 
-        <style>{`
-          @keyframes gridSlide {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(100px, 100px); }
-          }
-        `}</style>
-      </div>
-    );
-  }
+<!-- STORE -->
+<div class="card">
+<h2>🏪 Official Store</h2>
+<img src="https://static.wikia.nocookie.net/blox-fruits/images/6/6e/LeopardFruit.png">
+<p>Leopard Fruit</p>
+<button onclick="buyItem()">Buy Now</button>
+<div id="storeStatus" class="status hidden"></div>
+</div>
 
-  const HomePage = () => (
-    <div className="min-h-screen bg-[#050505] text-white">
-      <header className="relative z-20 bg-black/90 border-b border-zinc-800 backdrop-blur-md">
-        <div className="container mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-900/20">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
-            <h1 className="text-3xl font-black tracking-tighter">BLOX<span className="text-blue-500">EX</span></h1>
-          </div>
-          <div className="flex items-center gap-4">
-             <div className="flex items-center gap-2 bg-zinc-900 px-4 py-2 rounded-full border border-zinc-800">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <span className="text-zinc-400 text-xs font-bold">{activeUsers} Players Online</span>
-             </div>
-          </div>
-        </div>
-        
-        <nav className="container mx-auto px-6 pb-6 flex gap-3 overflow-x-auto no-scrollbar">
-          {[
-            { name: 'Marketplace', page: 'store', icon: Store, color: 'bg-blue-600' },
-            { name: 'Calculator', page: 'calculator', icon: Calculator, color: 'bg-zinc-800' },
-            { name: 'P2P Escrow', page: 'p2p', icon: ShieldCheck, color: 'bg-zinc-800' },
-            { name: 'Sell Items', page: 'sell', icon: TrendingUp, color: 'bg-zinc-800' },
-          ].map(item => (
-            <button
-              key={item.page}
-              onClick={() => setCurrentPage(item.page)}
-              className={`${item.color} px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 hover:opacity-80 transition-all whitespace-nowrap border border-white/5`}
-            >
-              <item.icon size={18} /> {item.name}
-            </button>
-          ))}
-        </nav>
-      </header>
+<!-- ESCROW -->
+<div class="card">
+<h2>🔐 P2P Escrow</h2>
+<p>Trade Status:</p>
+<div id="escrowState" class="status">Waiting for trade</div>
+<button onclick="createTrade()">Create Trade</button>
+<button class="secondary" onclick="payFee()">Pay 5% Fee</button>
+<button class="secondary" onclick="completeTrade()">Complete Trade</button>
+</div>
 
-      <main className="container mx-auto px-6 py-12">
-        <div className="text-center mb-16">
-          <h2 className="text-7xl font-black mb-4 tracking-tighter">ELITE FRUIT <br/><span className="text-zinc-500">EXCHANGE</span></h2>
-          <p className="text-zinc-400 text-lg max-w-xl mx-auto font-medium">Professional grade trading platform with instant delivery and military-grade escrow security.</p>
-        </div>
+<!-- CALCULATOR -->
+<div class="card">
+<h2>📊 Trade Calculator</h2>
+<input id="v1" placeholder="Your Value" style="width:100%;padding:10px">
+<input id="v2" placeholder="Their Value" style="width:100%;padding:10px;margin-top:10px">
+<button onclick="calc()">Calculate</button>
+<div id="calcResult" class="status"></div>
+</div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          <div onClick={() => setCurrentPage('store')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-blue-500 transition-all cursor-pointer group">
-            <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <ShoppingCart className="text-white" />
-            </div>
-            <h3 className="text-2xl font-black mb-2">OFFICIAL STORE</h3>
-            <p className="text-zinc-500 text-sm mb-6">Purchase mythical fruits directly from our verified inventory with 0% risk.</p>
-            <div className="text-blue-500 font-bold flex items-center gap-2">Enter Store <ArrowRight size={16}/></div>
-          </div>
+</section>
 
-          <div onClick={() => setCurrentPage('calculator')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-zinc-400 transition-all cursor-pointer group">
-            <div className="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Calculator className="text-white" />
-            </div>
-            <h3 className="text-2xl font-black mb-2">TRADE CALC</h3>
-            <p className="text-zinc-500 text-sm mb-6">Analyze trade values using our real-time updated database to ensure you win every deal.</p>
-            <div className="text-zinc-400 font-bold flex items-center gap-2">Open Tools <ArrowRight size={16}/></div>
-          </div>
+<section class="card">
+<h2>Why BloxEx?</h2>
+<ul>
+<li>✔ Manual Escrow Protection</li>
+<li>✔ No Scam Trades</li>
+<li>✔ Professional System</li>
+<li>✔ Premium UI</li>
+</ul>
+</section>
 
-          <div onClick={() => setCurrentPage('p2p')} className="bg-zinc-900/50 p-8 rounded-3xl border border-zinc-800 hover:border-zinc-400 transition-all cursor-pointer group">
-            <div className="w-14 h-14 bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <ShieldCheck className="text-white" />
-            </div>
-            <h3 className="text-2xl font-black mb-2">SAFE ESCROW</h3>
-            <p className="text-zinc-500 text-sm mb-6">Middleman services for player-to-player trades. Secure your items today.</p>
-            <div className="text-zinc-400 font-bold flex items-center gap-2">Get Secured <ArrowRight size={16}/></div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+<footer style="padding:30px;text-align:center;color:#777;border-top:1px solid #222">
+© 2025 BloxEx — Demo Prototype
+</footer>
 
-  // Remaining pages (StorePage, CalculatorPage, etc.) follow your logic but use the new theme
-  const StorePage = () => (
-    <div className="min-h-screen bg-[#050505] text-white">
-        <div className="bg-zinc-900/50 border-b border-zinc-800 px-6 py-6 sticky top-0 z-30 backdrop-blur-xl">
-            <div className="container mx-auto flex items-center justify-between">
-                <button onClick={() => setCurrentPage('home')} className="text-zinc-400 hover:text-white flex items-center gap-2 font-bold">
-                    <ArrowRight className="rotate-180" size={18} /> BACK
-                </button>
-                <div className="flex-1 max-w-md mx-8 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" size={18} />
-                    <input 
-                        type="text" 
-                        placeholder="Search fruits..." 
-                        className="w-full bg-black border border-zinc-800 rounded-xl py-2 pl-12 pr-4 focus:border-blue-500 outline-none transition-all"
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-            </div>
-        </div>
+<script>
+let escrow = "none";
 
-        <div className="container mx-auto px-6 py-10 grid md:grid-cols-4 gap-6">
-            {fruits.filter(f => f.name.toLowerCase().includes(searchTerm.toLowerCase())).map((fruit, i) => (
-                <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 hover:border-blue-500 transition-all group">
-                    <div className="aspect-square bg-black rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
-                        <img src={fruit.image} className="w-32 h-32 object-contain group-hover:scale-110 transition-transform" />
-                        <span className="absolute top-2 right-2 bg-blue-500/10 text-blue-500 text-[10px] font-black px-2 py-1 rounded">STOCK: {fruit.stock}</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-1">{fruit.name}</h3>
-                    <p className="text-zinc-500 text-xs font-bold mb-4 uppercase tracking-widest">{fruit.rarity}</p>
-                    <div className="flex items-end justify-between mb-4">
-                        <div>
-                            <p className="text-[10px] text-zinc-500 font-bold">PRICE</p>
-                            <p className="text-2xl font-black">₱{fruit.price.toLocaleString()}</p>
-                        </div>
-                        <p className="text-blue-500 font-bold">${fruit.usd}</p>
-                    </div>
-                    <button 
-                        onClick={() => setSelectedFruit(fruit)}
-                        className="w-full bg-white text-black font-black py-3 rounded-xl hover:bg-blue-500 hover:text-white transition-all"
-                    >
-                        BUY NOW
-                    </button>
-                </div>
-            ))}
-        </div>
-        {/* Payment Modal remains exactly as your code, just change colors to zinc-900/blue */}
-    </div>
-  );
+function createTrade() {
+  escrow = "created";
+  updateEscrow("Trade created. Awaiting fee.");
+}
+function payFee() {
+  if (escrow !== "created") return alert("Create trade first");
+  escrow = "fee_paid";
+  updateEscrow("Fee submitted. Middleman assigned.");
+}
+function completeTrade() {
+  if (escrow !== "fee_paid") return alert("Pay fee first");
+  escrow = "done";
+  updateEscrow("Trade completed successfully!");
+}
+function updateEscrow(text) {
+  document.getElementById("escrowState").innerText = text;
+}
 
-  return (
-    <>
-      {currentPage === 'home' && <HomePage />}
-      {currentPage === 'store' && <StorePage />}
-      {/* You would paste your CalculatorPage and P2PPage here with updated className colors */}
-      {currentPage === 'calculator' && <div className="p-20 text-center text-white bg-black h-screen">Calculator Logic remains the same... <button onClick={() => setCurrentPage('home')}>Back</button></div>}
-    </>
-  );
-};
+function buyItem() {
+  const s = document.getElementById("storeStatus");
+  s.classList.remove("hidden");
+  s.innerText = "Payment instructions sent. Upload receipt.";
+}
 
-export default BloxEx;
+function calc() {
+  const a = +v1.value, b = +v2.value;
+  if (!a || !b) return;
+  document.getElementById("calcResult").innerText =
+    a > b ? "You win the trade" : a < b ? "You lose the trade" : "Fair trade";
+}
+
+setInterval(()=>{
+  document.getElementById("online").innerText =
+    200 + Math.floor(Math.random()*100);
+},2000);
+</script>
+
+</body>
+</html>
